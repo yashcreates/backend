@@ -1,0 +1,94 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+scalar Upload
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  todos: [Todo]
+  premium:String!
+  worktypes: [WorkType]
+}
+
+type WorkType {
+  id: ID!
+  name: String!
+  user: User
+}
+
+type Todo {
+  id: ID!
+  description: String!
+  completed: Boolean!
+  dueDate: String!
+  user: User
+  worktype: WorkType
+  image:String
+}
+
+type TodoResult {
+  success: Boolean!
+  errors: [String]
+  todo: Todo
+}
+
+type TodosResult {
+  success: Boolean!
+  errors: [String]
+  todos: [Todo]
+}
+type workResult {
+  success: Boolean!
+  errors: [String]
+  work: WorkType
+}
+type workResults {
+  success: Boolean!
+  errors: [String]
+  works: [WorkType]
+}
+
+type userResults {
+  success: Boolean!
+  errors: [String]
+  users: [User]
+}
+type userResult {
+  success: Boolean!
+  errors: [String]
+  user: User
+}
+
+type Query {
+
+  usersTodos(userId:ID!): TodosResult!
+
+  todos: TodosResult!
+  works: workResults!
+  work(workId:ID!): workResult!
+  todo(todoId:ID!): TodoResult!
+
+  users: userResults!
+  user(userId:ID!): userResult!
+}
+
+type DeleteTodoResult {
+  success: Boolean!
+  errors: [String]
+}
+
+type Mutation {
+  updateTodo(todoId:ID!,dueDate:String,description:String):TodoResult!
+  updateWork(workId:ID!,name:String!,userId:ID!):workResult!
+  createWorks(name:String!,userId: ID!): workResult!
+  createTodo(description: String!, dueDate: String!, userId: ID!,workname:String!): TodoResult!
+  createUser(id:String!,name:String!, email: String!, password: String!): userResult!
+  addImage(img:String!,todoId:ID!):TodoResult!
+  deleteTodo(todoId: ID!): DeleteTodoResult!
+  deleteWorks(workId: ID!): DeleteTodoResult!
+  markDone(todoId: ID!): TodoResult!
+  updatepremium(userId:String!):userResult!
+}
